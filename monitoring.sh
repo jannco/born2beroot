@@ -4,7 +4,7 @@
 arch=$(uname -srvmo)
 
 #CPU physica
-fcpu=$(lscpu | awk '"Socket(s):" == $1 {print $2}')
+fcpu=$(cat /proc/cpuinfo | grep "cpu cores" | uniq | awk '{print $4}')
 
 #vCPU
 vcpu=$(nproc --all)
@@ -13,7 +13,9 @@ vcpu=$(nproc --all)
 memusar=$(free --mega | awk '$1 == "Mem:" {printf "%d/%dMB (%.2f%%)\n", $3, $2, $3/$2*100}')
 
 #Disk Usage
-diskused=$(df -h --total | awk '"total" == $1 {printf"%.1f/%s (%d%%)\n", $3, $2, $3/$2*100}')
+disk_proc=$(df --total | awk '"total" == $1 {printf"(%d%%)\n", $3/$2*100}')
+diskused="$(df -h --total | awk '\"total\" == $1 {printf\"%.1f/%s \", $3, $2}') $disk_proc"
+#diskused=$(df -h --total | awk "\"total\" == \$1 {printf\"%.1f/%s %s\", \$3, \$2, $disk_proc}")
 
 #CPU load
 cpu=$(vmstat: 1 1 | tail -1 | awk '{printf"%.1f%%\n", 100-$15}')
