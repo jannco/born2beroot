@@ -3,7 +3,7 @@
 
 arch=$(uname -srvmo)
 
-#CPU physica
+#CPU physical
 fcpu=$(cat /proc/cpuinfo | grep "cpu cores" | uniq | awk '{print $4}')
 
 #vCPU
