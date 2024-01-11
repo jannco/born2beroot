@@ -4,7 +4,8 @@
 arch=$(uname -srvmo)
 
 #CPU physical
-fcpu=$(cat /proc/cpuinfo | grep "cpu cores" | uniq | awk '{print $4}')
+fcpu=$(lscpu | grep "Socket(s)" | awk '{print $2}')
+#fcpu=$(cat /proc/cpuinfo | grep "cpu cores" | uniq | awk '{print $4}')
 
 #vCPU
 vcpu=$(nproc --all)
