@@ -1,0 +1,86 @@
+Commands Born2beroot
+
+#see the partition
+lsblk
+
+#sudo
+apt install sudo
+sudo adduser username - create user login, name ...
+sudo useradd username - create only user login
+sudo addgroup user42 - create group "user42"
+
+su - root user
+groups
+usermod -aG sudo yadereve - add user in the "sudo" group
+getent group sudo - check if user is in "sudo" group
+sudo visudo - open sudoers file. (User privilege specification yadereve	ALL=(ALL) ALL)
+
+#Git
+git --version
+
+#ssh
+sudo systemctl status ssh - status ssh
+sudo vim /etc/ssh/sshd_config - config Port 22 to 4242
+sudo grep Port /etc/ssh/ssh_config - Port 4242
+sudo service ssh restart - restart ssh
+
+#UFW
+sudo ufw enable
+sudo ufw status (sudo ufw status numbered)
+sudo ufw allow 4242
+ufw delete allow 22 - delete port 22
+
+#Connecting to SSH
+Attached to: NAT
+ip link set dev eth0 up
+dhclient -v eth0
+cat /etc/hosts
+
+ss -lutn 
+
+
+#Password Policy
+/etc/sudioers.d/sudo_config
+🟩 Defaults  passwd_tries=3
+🟥 Defaults  badpass_message="Sorry, try agen."
+🟨 Defaults  logfile="/var/log/sudo/sudo.log"
+🟦 Defaults  log_input, log_output
+🟦 Defaults  iolog_dir="/var/log/sudo"
+🟫 Defaults  requiretty
+🟪 Defaults  secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+<<<<<<<<<<<<<<<>>>>>>>>>>>>>
+🟩 GREEN	-> Total tries for entering the sudo password.
+🟥 RED	-> The message that will show when the password failed.
+🟨 YELLOW	-> Path where will the sudo logs will be stored.
+🟦 BLUE	-> What will be logged.
+🟫 BROWN	-> TTY is required lol.
+🟪 PURPLE	-> Folders that will be excluded of sudo
+
+/etc/login.defs
+➤ PASS_MAX_DAYS 99999 -> PASS_MAX_DAYS 30
+➤ PASS_MIN_DAYS 0 -> PASS_MIN_DAYS 2
+<<<<<<<<<<<<<<<>>>>>>>>>>>>>
+PASS_MAX_DAYS: It's the max days till password expiration.
+PASS_MIN_DAYS: It's the min days till password change.
+PASS_WARN_AGE: It's the days till password warning.
+
+
+sudo apt install libpam-pwquality
+/etc/pam.d/common-password
+$ minlen=10 ➤ The minimun characters a password must contain.
+$ ucredit=-1 ➤ The password at least have to contain a capital letter. We must write it with a - sign, as is how it knows that's refering to minumum caracters; if we put a + sign it will refer to maximum characters.
+$ dcredit=-1 ➤ The passworld at least have to containt a digit.
+$ lcredit=-1 ➤ The password at least have to contain a lowercase letter.
+$ maxrepeat=3 ➤ The password can not have the same character repited three contiusly times.
+$ reject_username ➤ The password can not contain the username inside itself.
+$ difok=7 ➤ The password it have to containt at least seven diferent characters from the last password ussed.
+$ enforce_for_root ➤ We will implement this password policy to root.
+
+#Crontab
+sudo crontab -l
+sudo crontab -u root -e
+*/10 * * * * sh /home/yadereve/monitoring.sh
+/etc/crontab ➤  sistema padrão
+sudo systemctl stop cron
+sudo systemctl status cron
+sudo systemctl restart cron
